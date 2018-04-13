@@ -1,0 +1,94 @@
+#packopt type 2
+#packopt name "ScreensaverApeiria"
+#define SIZE 1024
+
+    para = dir_cmdline    ;パラメータ取得
+    para = strmid(para, 0, 2)
+    if para = "/p" | para = "/P" : goto *preview    ;プレビュー
+    if para = "/s" | para = "/S" : goto *ssaver_     ;フルスクリーン
+    if para = "/c" | para = "/C" : goto *config     ;コンフィグ
+    if para = "": goto *ssaver_
+    dialog "無効なオプションです。" + "[" + para + "]"
+    end
+*config
+    mes "CONFIG"
+    goto *ssaver
+*preview
+    mes "PREVIEW"
+    goto *ssaver
+*ssaver_
+bgscr 0, ginfo_dispx, ginfo_dispy, 0, 0, 0
+*ssaver
+dx=2: dy=3
+dim num, SIZE
+dim easex, SIZE
+dim easey, SIZE
+dim x, SIZE
+dim y, SIZE
+dim alpha, SIZE
+randomize
+sizeFont= ginfo_winx/64//24
+setease -ginfo_winx, 0,ease_quartic_out;+ease_loop
+easeSize=100
+foreach num
+	num(cnt)= rnd(16)
+	easex(cnt)= rnd(easeSize)
+	easey(cnt)= rnd(easeSize)
+	x(cnt)= rnd(ginfo_winx)
+	y(cnt)= rnd(ginfo_winy)
+	alpha(cnt)= 56+ rnd(200)
+loop
+
+font msmincho, sizeFont, 1
+repeat easeSize-easeSize/2
+	cnt1= cnt
+	redraw 0
+	color: boxf
+	color 0, 255, 0
+	foreach num
+		cnt2= cnt
+		pos x(cnt2)+ getease(cnt1, easex(cnt2)), y(cnt2)+ getease(cnt1, easey(cnt2))
+		mes strf("%X", ((cnt1+ num(cnt2 ) )\ 16))
+	loop
+	//x+=dx: y+=dy
+	redraw 1
+	wait 3
+loop
+
+nX= ginfo_winx/ sizeFont
+nY= ginfo_winy/ sizeFont+ 1
+dim num, nX* nY
+dim alpha, nX* nY
+dim nums, length(num), 16
+foreach num
+	num(cnt)= rnd(16)
+	alpha(cnt)= 56+ rnd(200)
+	cnt1= cnt
+	repeat 16
+		cnt2= cnt
+		nums(cnt1, cnt2)= (num(cnt1)+ cnt2)\16
+	loop
+loop
+repeat
+	cnt1= cnt
+	redraw 0
+	color: boxf
+	gap= cnt1* sizeFont/ 2
+	bufInt= cnt1\16
+	repeat nY
+		cnt2= cnt
+		posY= (cnt2* sizeFont+ gap)\ (ginfo_winy+ sizeFont)-sizeFont
+		bufInt2= cnt2*nY
+		repeat nX
+			cnt3= cnt
+			color 0, alpha(bufInt2+ cnt3), 0
+			pos cnt3* sizeFont, posY
+			mes strf("%X", nums(bufInt2+ cnt3, bufInt) )
+		loop
+	loop
+	//x+=dx: y+=dy
+	redraw 1
+	wait 3
+loop
+
+;end
