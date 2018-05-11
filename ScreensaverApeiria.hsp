@@ -27,7 +27,7 @@ dim x, SIZE
 dim y, SIZE
 dim alpha, SIZE
 randomize
-sizeFont= 16
+sizeFont= 24
 setease -300, 300,ease_quartic_inout+ease_loop
 
 foreach num
@@ -67,18 +67,20 @@ repeat
 	cnt1= cnt
 	redraw 0
 	color: boxf
+	gap= cnt1* sizeFont/ 2
 	repeat nY
 		cnt2= cnt
+		posY= (cnt2* sizeFont+ gap)\ (ginfo_winy+ sizeFont)-sizeFont
 		repeat nX
 			cnt3= cnt
 			color 0, alpha(cnt2*nY+ cnt3), 0
-			pos cnt3* sizeFont, (cnt2* sizeFont+ cnt1* sizeFont/ 2)\ (ginfo_winy+ sizeFont)-sizeFont
+			pos cnt3* sizeFont, posY
 			mes strf("%X", ((cnt1+ num(cnt2*nY+ cnt3) )\ 16))
 		loop
 	loop
 	//x+=dx: y+=dy
 	redraw 1
-	wait 1
+	wait 3
 loop
 
 ;end
