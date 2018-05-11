@@ -59,23 +59,31 @@ nX= ginfo_winx/ sizeFont
 nY= ginfo_winy/ sizeFont+ 1
 dim num, nX* nY
 dim alpha, nX* nY
+dim nums, length(num), 16
 foreach num
 	num(cnt)= rnd(16)
 	alpha(cnt)= 56+ rnd(200)
+	cnt1= cnt
+	repeat 16
+		cnt2= cnt
+		nums(cnt1, cnt2)= (num(cnt1)+ cnt2)\16
+	loop
 loop
 repeat
 	cnt1= cnt
 	redraw 0
 	color: boxf
 	gap= cnt1* sizeFont/ 2
+	bufInt= cnt1\16
 	repeat nY
 		cnt2= cnt
 		posY= (cnt2* sizeFont+ gap)\ (ginfo_winy+ sizeFont)-sizeFont
+		bufInt2= cnt2*nY
 		repeat nX
 			cnt3= cnt
-			color 0, alpha(cnt2*nY+ cnt3), 0
+			color 0, alpha(bufInt2+ cnt3), 0
 			pos cnt3* sizeFont, posY
-			mes strf("%X", ((cnt1+ num(cnt2*nY+ cnt3) )\ 16))
+			mes strf("%X", nums(bufInt2+ cnt3, bufInt) )
 		loop
 	loop
 	//x+=dx: y+=dy
