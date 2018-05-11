@@ -1,6 +1,6 @@
 #packopt type 2
 #packopt name "ScreensaverApeiria"
-#define SIZE 512
+#define SIZE 1024
 
     para = dir_cmdline    ;ƒpƒ‰ƒ[ƒ^æ“¾
     para = strmid(para, 0, 2)
@@ -27,32 +27,32 @@ dim x, SIZE
 dim y, SIZE
 dim alpha, SIZE
 randomize
-sizeFont= 24
-setease -300, 300,ease_quartic_inout+ease_loop
-
+sizeFont= ginfo_winx/64//24
+setease -ginfo_winx, 0,ease_quartic_out;+ease_loop
+easeSize=100
 foreach num
 	num(cnt)= rnd(16)
-	easex(cnt)= 50+ rnd(200)
-	easey(cnt)= 50+ rnd(200)
+	easex(cnt)= rnd(easeSize)
+	easey(cnt)= rnd(easeSize)
 	x(cnt)= rnd(ginfo_winx)
 	y(cnt)= rnd(ginfo_winy)
 	alpha(cnt)= 56+ rnd(200)
 loop
 
 font msmincho, sizeFont, 1
-repeat 10
+repeat easeSize-easeSize/2
 	cnt1= cnt
 	redraw 0
 	color: boxf
 	color 0, 255, 0
 	foreach num
 		cnt2= cnt
-		pos x(cnt2)+ getease(cnt2, easex(cnt2)), y(cnt2)+ getease(cnt2, easey(cnt2))
+		pos x(cnt2)+ getease(cnt1, easex(cnt2)), y(cnt2)+ getease(cnt1, easey(cnt2))
 		mes strf("%X", ((cnt1+ num(cnt2 ) )\ 16))
 	loop
 	//x+=dx: y+=dy
 	redraw 1
-	wait 6
+	wait 3
 loop
 
 nX= ginfo_winx/ sizeFont
